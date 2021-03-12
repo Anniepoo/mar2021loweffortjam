@@ -4,7 +4,7 @@ var current_keycode = "KeyD";
 function keymove(e) {
     current_keycode = e.code;
 }
-
+0.
 function cmdmove () {
     switch(current_keycode) {
         case   "KeyA":
@@ -28,8 +28,6 @@ function cmdmove () {
 document.addEventListener('keypress', keymove);
 
 function move_player(dx , dy) {
-    var foo = document.getElementById("player").offsetLeft;
-    console.log(foo);
     document.getElementById("player").style.left =
         (document.getElementById("player").offsetLeft + dx) + 'px';
     document.getElementById("player").style.top =
@@ -48,6 +46,15 @@ function randomMove() {
     move_player(
         (Math.random() - 0.5) * 5.0,
         (Math.random() - 0.5) * 5.0);
+}
+
+function randomPlace(){
+    var wx = document.getElementById("sea").offsetWidth;
+    var wy = document.getElementById("sea").offsetHeight;
+    document.getElementById("player").style.left =
+        Math.floor(wx * Math.random()) + 'px';
+    document.getElementById("player").style.top =
+    Math.floor(wy * Math.random()) + 'px';    
 }
 
 function perlinMove() {
@@ -70,3 +77,5 @@ function perlinMove() {
 
         move_player(dx * 15.0, dy * 15.0);
 }
+
+randomPlace();
