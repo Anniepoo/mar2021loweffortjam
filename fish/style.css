@@ -9,3 +9,9 @@
     font-size: 18pt;
     font-family: 'DotGothic16', Courier, monospace;
 }
+
+#player {
+    position: absolute;
+    left: 100px;
+    top: 100px;
+}
