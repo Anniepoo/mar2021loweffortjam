@@ -1,4 +1,20 @@
-import sys, pygame
+import sys, pygame, math
+
+# Compute the area by triangle fan
+def area(coords):
+    area = 0
+    for i in range(len(coords)):
+        v1,v2,v3 = 0,i+1,i+2
+        tr_area = math.fabs(0.5 * (
+            coords[v1].x*(coords[v2].y - coords[v3].y) +
+        ))
+        tr_area = abs(0.5*(
+            x_cords[v1]*(y_cords[v2]-y_cords[v3])+
+            x_cords[v2]*(y_cords[v3]-y_cords[v1])+
+            x_cords[v3]*(y_cords[v1]-y_cords[v2])))
+        area += tr_area
+    return area
+
 pygame.init()
 
 size = width, height = 320, 240
