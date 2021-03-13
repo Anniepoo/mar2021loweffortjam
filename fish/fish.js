@@ -5,19 +5,19 @@ function keymove(e) {
     current_keycode = e.code;
 }
 0.
-function cmdmove () {
+function cmdmove (elem) {
     switch(current_keycode) {
         case   "KeyA":
-            move_player(-10, 0);
+            move_elem(elem, -10, 0);
             break;
         case   "KeyS":
-            move_player(0, 10);
+            move_elem(elem, 0, 10);
             break;
         case   "KeyD":
-            move_player(10, 0);
+            move_elem(elem, 10, 0);
             break;
         case   "KeyW":
-            move_player(0, -10);
+            move_elem(elem, 0, -10);
             break;
         default:
             console.log(`other key ${e.code}`);
@@ -27,23 +27,29 @@ function cmdmove () {
 
 document.addEventListener('keypress', keymove);
 
-function move_player(dx , dy) {
-    document.getElementById("player").style.left =
-        (document.getElementById("player").offsetLeft + dx) + 'px';
-    document.getElementById("player").style.top =
-        (document.getElementById("player").offsetTop + dy) + 'px'; 
+function move_elem(elem, dx , dy) {
+    elem.style.left = (elem.offsetLeft + dx) + 'px';
+    elem.style.top = (elem.offsetTop + dy) + 'px'; 
 }
 
 setInterval(move, 400);
 
 function move() {
-    cmdmove();
-    randomMove();
-    perlinMove();
+    var player = document.getElementById("player");
+
+    cmdmove(player);
+    randomMove(player);
+    perlinMove(player);
+
+    var bubbles = document.querySelectorAll('.bubble');
+    for( b of bubbles) {
+        perlinMove(b);
+    }
 }
 
-function randomMove() {
-    move_player(
+function randomMove(elem) {
+    move_elem(
+        elem,
         (Math.random() - 0.5) * 5.0,
         (Math.random() - 0.5) * 5.0);
 }
@@ -54,28 +60,37 @@ function randomPlace(){
     document.getElementById("player").style.left =
         Math.floor(wx * Math.random()) + 'px';
     document.getElementById("player").style.top =
-    Math.floor(wy * Math.random()) + 'px';    
+    Math.floor(wy * Math.random()) + 'px';
+    var n = Math.floor(20.0 + 40.0 * Math.random());
+    var s = "";
+    for(i = 0; i < n ; i++){
+        t = Math.floor(100.0 * Math.random())
+        l = Math.floor(100.0 * Math.random())
+        s += `<div class="bubble" style="left: ${l}%; top: ${t}%;">o</div>`;
+    }
+    document.getElementById("food").innerHTML = s;
 }
 
-function perlinMove() {
+
+function perlinMove(elem) {
     var wx = document.getElementById("sea").offsetWidth;
     var wy = document.getElementById("sea").offsetHeight;
-    var x = document.getElementById("player").offsetLeft;
-    var y = document.getElementById("player").offsetTop;
+    var x = elem.offsetLeft;
+    var y = elem.offsetTop;
 
     var dx = Math.sin(x * Math.PI * 2.0 / wx ) +
         Math.sin(0.3 + x * Math.PI * 4.0 / wx ) * 0.2 + 
         Math.sin(0.8 + x * Math.PI * 8.0 / wx ) * 0.4 +
-        Math.sin(0.1 + x * Math.PI * 2.0 / wy )* 0.54 +
-        Math.sin(0.5 + x * Math.PI * 4.0 / wy ) * 0.3;
+        Math.sin(0.1 + y * Math.PI * 2.0 / wy )* 0.54 +
+        Math.sin(0.5 + y * Math.PI * 4.0 / wy ) * 0.3;
    
         var dy = Math.sin(1.2 + x * Math.PI * 2.0 / wx ) +
         Math.sin(0.8 + x * Math.PI * 4.0 / wx ) * 0.2 + 
         Math.sin(0.25 + y * Math.PI * 8.0 / wy ) * 0.74 +
-        Math.sin(0.9 + x * Math.PI * 2.0 / wy )* 0.54 +
-        Math.sin(0.45 + x * Math.PI * 4.0 / wy ) * 0.8;
+        Math.sin(0.9 + y * Math.PI * 2.0 / wy )* 0.54 +
+        Math.sin(0.45 + y * Math.PI * 4.0 / wy ) * 0.8;
 
-        move_player(dx * 15.0, dy * 15.0);
+        move_elem(elem, dx * 15.0, dy * 15.0);
 }
 
 randomPlace();
